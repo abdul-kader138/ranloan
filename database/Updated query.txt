@@ -1,0 +1,607 @@
+Hardik 
+----------------------------------
+INSERT INTO `payment_method` (`id`, `name`, `balance`, `outlet_id`, `created_user_id`, `created_datetime`, `updated_user_id`, `updated_datetime`, `status`) VALUES (NULL, 'Pay Outstanding', '0', '1', '2', '2017-09-12 04:06:07', '2', '2017-09-12 04:06:07', '1');
+
+Hardik
+----------------------------------
+ALTER TABLE `transactions` CHANGE `trans_type` `trans_type` ENUM('wd','dep','loan','return','outstanding','payment') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL; 
+
+Hardik
+----------------------------------
+ALTER TABLE `customers` ADD `credit_amount` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `loan_amount`;
+
+Hardik
+----------------------------------
+ALTER TABLE `settlement` ADD `transaction_date` DATE NOT NULL AFTER `settlement_no`;  
+
+Hardik
+----------------------------------
+CREATE TABLE IF NOT EXISTS `temporary_order_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `settlement_id` varchar(255) NOT NULL DEFAULT '',
+  `product_code` varchar(255) NOT NULL DEFAULT '',
+  `qty` varchar(255) NOT NULL DEFAULT '',
+  `cost` varchar(255) NOT NULL DEFAULT '0',
+  `price` varchar(255) NOT NULL DEFAULT '0',
+  `paid` varchar(255) NOT NULL DEFAULT '0',
+  `grandtotal` varchar(255) NOT NULL DEFAULT '0',
+  `tax` varchar(255) NOT NULL DEFAULT '0',
+  `tax_amount` varchar(255) NOT NULL DEFAULT '0',
+  `discount` varchar(255) NOT NULL DEFAULT '0',
+  `discount_amount` varchar(255) NOT NULL DEFAULT '0',
+  `testing_qty` varchar(255) NOT NULL DEFAULT '0',
+  `start_meter` varchar(255) NOT NULL DEFAULT '0',
+  `end_meter` varchar(255) NOT NULL DEFAULT '0',
+  `pump_operators_id` varchar(255) NOT NULL DEFAULT '',
+  `pump_id` varchar(255) NOT NULL DEFAULT '',
+  `ow_id` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(255) NOT NULL DEFAULT '' COMMENT '0:warehouse, 1:tank',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 
+
+
+alpesh
+----------------------------
+ALTER TABLE `purchase_order` ADD `transation_date` DATE NOT NULL AFTER `received_datetime`;
+ALTER TABLE `expenses` ADD `transation_date` DATE NOT NULL AFTER `updated_datetime`;
+
+
+Hardik
+----------------------------
+CREATE TABLE IF NOT EXISTS `product_report` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_code` varchar(255) NOT NULL DEFAULT '',
+  `opening_qty` varchar(255) NOT NULL DEFAULT '0',
+  `purchase_qty` varchar(255) NOT NULL DEFAULT '0',
+  `sales_qty` varchar(255) NOT NULL DEFAULT '0',
+  `balance_qty` varchar(255) NOT NULL DEFAULT '0',
+  `created_by` varchar(255) NOT NULL DEFAULT '',
+  `created_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+Hardik
+--------------------------
+ALTER TABLE `transactions` ADD `transfer_status` VARCHAR(255) NOT NULL DEFAULT '0' COMMENT '0: payment_method, 1:bank' AFTER `status`;
+
+ALTER TABLE `transactions` CHANGE `trans_type` `trans_type` ENUM('wd','dep','loan','return','outstanding','payment','transer') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+Hardik Add new Page
+------------------------------
+Module Title: Bank Transaction
+Page Url Name: bank_transaction
+Module: Sub Module
+Main Module: Banking Module
+Role: Select All
+
+alpesh
+-------------------------
+ALTER TABLE `gold_order_services` ADD `pre_print_invoice` VARCHAR(255) NOT NULL DEFAULT '0' COMMENT '1-print 0-noprint' AFTER `price`;
+ALTER TABLE `gold_orders` ADD `gold_customer_note` VARCHAR(255) NOT NULL AFTER `gold_customer_mobile`;
+
+CREATE TABLE IF NOT EXISTS `gold_order_services` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_items_gold_id` int(255) NOT NULL,
+  `services_name` varchar(255) NOT NULL,
+  `price` int(255) NOT NULL,
+  `pre_print_invoice` varchar(255) NOT NULL DEFAULT '0' COMMENT '1-print 0-noprint',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+ALTER TABLE `gold_orders` ADD `gold_point` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_payment_details`;
+
+ALTER TABLE `gold_orders` ADD `gold_balance` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_point`;
+ALTER TABLE `order_items_gold` ADD `balance_stock` VARCHAR(255) NOT NULL AFTER `qty`;
+ALTER TABLE `order_items_gold` ADD `warehouse_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `balance_stock`;
+
+Hardik
+----------------------
+ALTER TABLE `transactions` CHANGE `trans_type` `trans_type` ENUM('wd','dep','loan','return','outstanding','payment','transfer') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL; 
+
+ALTER TABLE `transactions` ADD `reconcile` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `transfer_status`; 
+
+ALTER TABLE `pump_reading` ADD `order_item_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `settlement_id`; 
+
+ALTER TABLE `order_items_gold` ADD `tax_amount` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `tax`; 
+
+ALTER TABLE `order_items_gold` ADD `discount` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `grandtotal`; 
+
+ALTER TABLE `order_items_gold` ADD `discount_amount` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `discount`; 
+
+ALTER TABLE `order_items_gold` CHANGE `tax` `tax` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0'; 
+
+
+alpesh
+---------------------------
+ALTER TABLE `gold_orders` ADD `sale_person_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_outlet_id`;
+
+Hardik 
+----------------------------
+New Page
+
+Module Title: Inventory Changes
+Page Url Name : inventory_changes
+Module : Sub Module
+Main Module: Inventory Module
+Role: Select All
+
+
+CREATE TABLE IF NOT EXISTS `inventory_changes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_code` varchar(255) NOT NULL DEFAULT '',
+  `settlement_no` varchar(255) NOT NULL DEFAULT '',
+  `outlet_id` varchar(255) NOT NULL DEFAULT '',
+  `qty` varchar(255) NOT NULL DEFAULT '0',
+  `available_qty` varchar(255) NOT NULL DEFAULT '0',
+  `tank_warehouse_id` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(255) NOT NULL DEFAULT '' COMMENT '1: tank, 0:warehouse',
+  `note` text NOT NULL,
+  `price` varchar(255) NOT NULL DEFAULT '0',
+  `amount` varchar(255) NOT NULL DEFAULT '',
+  `created_by` varchar(255) NOT NULL DEFAULT '',
+  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `purchase_sale_type` varchar(255) NOT NULL DEFAULT '' COMMENT '0: sales, 1:purchase',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+
+ALTER TABLE `transactions` CHANGE `trans_type` `trans_type` ENUM('wd','dep','loan','return','outstanding','payment','transfer','payment_s') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL; 
+
+CREATE TABLE IF NOT EXISTS `customer_more_details_payment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` varchar(255) NOT NULL DEFAULT '',
+  `settlement_id` varchar(255) NOT NULL DEFAULT '',
+  `sale_payment_id` varchar(255) NOT NULL DEFAULT '',
+  `product_code` varchar(255) NOT NULL DEFAULT '',
+  `unit_price` varchar(255) NOT NULL DEFAULT '0',
+  `qty` varchar(255) NOT NULL DEFAULT '0',
+  `total_amount` varchar(255) NOT NULL DEFAULT '0',
+  `created_by` varchar(255) NOT NULL DEFAULT '',
+  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(255) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+alpesh
+----------------------------
+ALTER TABLE `order_items_gold` ADD `product_details` VARCHAR(255) NOT NULL AFTER `product_category`;
+
+Hardik
+-----------------------------
+ALTER TABLE `product_report` ADD `bonusqty` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `purchase_qty`; 
+
+ALTER TABLE `gold_orders` ADD `gold_stock_subtotal` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_tax`, ADD `gold_stock_service_subtotal` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_stock_subtotal`, ADD `gold_order_subtotal` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_stock_service_subtotal`, ADD `gold_order_service_subtotal` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_order_subtotal`;
+
+ALTER TABLE `transactions` ADD `order_payment_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `account_number`;
+
+
+alpesh
+---------------- 
+ALTER TABLE `gold_orders` ADD `gold_tax_percentage` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_tax`;
+
+Hardik
+------------------------------
+INSERT INTO `payment_method` (`id`, `name`, `balance`, `outlet_id`, `created_user_id`, `created_datetime`, `updated_user_id`, `updated_datetime`, `status`) VALUES (NULL, 'Credit Note', '0', '1', '2', '2017-09-25 03:06:07', '2', '2017-09-25 03:06:07', '1'), (NULL, 'Debit Note', '0', '1', '2', '2017-09-25 03:06:07', '2', '2017-09-25 03:06:07', '1')
+
+Module Title: Add Work Job Order
+Page Url Name: add_work_job_order
+Module: Sub Module
+Main Module : Production Module
+Role: Select All
+
+alpesh
+----------------------------------
+ALTER TABLE `order_items_gold` ADD `product_image` VARCHAR(500) NOT NULL DEFAULT '' AFTER `order_id`;
+ALTER TABLE `gold_orders` ADD `gold_delivery_date` DATE NOT NULL AFTER `gold_ordered_datetime`;
+ALTER TABLE `gold_orders` ADD `gold_unpaid_amt` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `gold_paid_amt`;
+
+
+Hardik
+---------------------------
+CREATE TABLE IF NOT EXISTS `main_work_job_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` varchar(255) NOT NULL DEFAULT '',
+  `create_date` date NOT NULL,
+  `job_order_no` varchar(255) NOT NULL DEFAULT '',
+  `outlet_id` varchar(255) NOT NULL DEFAULT '',
+  `gold_smith_id` varchar(255) NOT NULL DEFAULT '',
+  `customer_order_no` varchar(255) NOT NULL DEFAULT '',
+  `created_user_id` varchar(255) NOT NULL DEFAULT '',
+  `order_delivery_date` date NOT NULL,
+  `TotalQty` varchar(255) NOT NULL DEFAULT '0',
+  `TotalRequiredQty` varchar(255) NOT NULL DEFAULT '0',
+  `TotalCurrentWeight` varchar(255) NOT NULL DEFAULT '0',
+  `TotalUnitWeight` varchar(255) NOT NULL DEFAULT '0',
+  `TotalGoldforGoldsmith` varchar(255) NOT NULL DEFAULT '0',
+  `TotalAlloyforGoldsmith` varchar(255) NOT NULL DEFAULT '0',
+  `item_details` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+alpesh
+----------------------------------------------
+ALTER TABLE `gold_orders` ADD `gold_total_qty_item` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `gold_gold_gift_card`;
+
+Hardik
+----------------------------------------------
+ALTER TABLE `gold_grade` CHANGE `date_created` `date_created` DATETIME NOT NULL; 
+Main Module *
+ALTER TABLE `gold_grade` ADD `created_by` VARCHAR(255) NOT NULL DEFAULT '' AFTER `date_created` 
+
+ALTER TABLE `gold_grade` ADD `last_gold_purity` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `grade_name` 
+
+
+alpesh
+-------------------------------------------
+Module Title : Goldsmith Payment Transaction
+Page Url Name: goldsmith_payment_transaction
+Module: Sub Module
+Main Module: Reports Module
+Role: Select All
+
+
+Hardik
+------------
+ALTER TABLE `gold_prices` ADD `created_by` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gp_date`; 
+
+
+
+alpesh
+------------------------------------------------
+Module Title:Goldsmith Gold Transaction Report
+Page Url Name:goldsmith_gold_transaction_report
+Module:Sub module
+Main Module:Report Module
+Role:All Select
+
+ALTER TABLE `order_items_gold` ADD `gold_grade_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `warehouse_id`;
+
+Hardik
+---------------------------
+ALTER TABLE `gold_grade` CHANGE `gold_purity` `gold_purity` FLOAT(6,3) NOT NULL; 
+ALTER TABLE `gold_grade` CHANGE `grade_price` `grade_price` FLOAT(6,3) NOT NULL; 
+ALTER TABLE `gold_smith` ADD `opening_gold_qty` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `gold_smith_num` 
+
+ALTER TABLE `products` ADD `grade_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `sub_category_id_fk` 
+
+Alpesh
+--------------------
+ALTER TABLE `work_job_order` CHANGE `gold_qty_goldsmith` `gold_qty_goldsmith` VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE `work_job_order` CHANGE `alloy_qty_goldsmith` `alloy_qty_goldsmith` VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE `work_job_order` CHANGE `product_qty` `product_qty` VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE `work_job_order` CHANGE `weight_bluk_store_product` `weight_bluk_store_product` VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE `work_job_order` CHANGE `weight_each_product` `weight_each_product` VARCHAR(255) NOT NULL;
+ALTER TABLE `work_job_order` CHANGE `qty` `qty` VARCHAR(255) NOT NULL DEFAULT '';
+
+Module Title:Profit Calculations
+Page Url Name:profit_calculations
+Module:Sub module
+Main Module:setting Module
+Role:all selected
+
+INSERT INTO `category`(`id`, `name`, `created_user_id`, `created_datetime`, `updated_user_id`, `updated_datetime`, `status`) VALUES ('1','Gold','1',CURRENT_TIMESTAMP(),'1',CURRENT_TIMESTAMP(),'1')
+
+
+
+Hardik
+----------------------------
+Module Title: Sales Price Calculations
+Page Url Name: sales_price_calculations
+Module: Sub Module
+Main Module: Gold Module
+Role: Select All
+
+ALTER TABLE `bank_accounts` CHANGE `current_balance` `current_balance` VARCHAR(255) NOT NULL DEFAULT '0';
+ALTER TABLE `bank_transfers` CHANGE `amount` `amount` VARCHAR(255) NOT NULL 
+
+
+
+Alpesh
+--------------
+ALTER TABLE `work_job_order_receive` ADD `outlet_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `goldsmith`;
+
+ALTER TABLE `work_job_order_receive` CHANGE `create_date` `create_date` DATETIME NOT NULL; 
+ALTER TABLE `work_job_order_receive` ADD `note` TEXT NOT NULL DEFAULT '' AFTER `receive_job_sel_no`;
+ALTER TABLE `work_job_order_receive` ADD `item_weight` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_grade`;
+ALTER TABLE `work_job_order_receive` ADD `receiving_store` VARCHAR(255) NOT NULL DEFAULT '' AFTER `receive_job_sel_no`;
+
+
+
+Alpesh
+-----------------------
+CREATE TABLE IF NOT EXISTS `profit_calculations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` varchar(255) NOT NULL DEFAULT '',
+  `category_name` varchar(255) NOT NULL DEFAULT '',
+  `gold_grade_id` varchar(255) NOT NULL DEFAULT '',
+  `gold_grade_name` varchar(255) NOT NULL DEFAULT '',
+  `profit` varchar(255) NOT NULL DEFAULT '',
+  `min_profit` varchar(255) NOT NULL DEFAULT '',
+  `gold_weight` varchar(255) NOT NULL DEFAULT '',
+  `wastage_weight` varchar(255) NOT NULL DEFAULT '',
+  `stone_cost` varchar(255) NOT NULL DEFAULT '',
+  `labout_cost` varchar(255) NOT NULL DEFAULT '',
+  `other1_cost` varchar(255) NOT NULL DEFAULT '',
+  `other2_cost` varchar(255) NOT NULL DEFAULT '',
+  `other3_cost` varchar(255) NOT NULL DEFAULT '',
+  `create_date` datetime NOT NULL,
+  `created_by` varchar(255) NOT NULL DEFAULT '',
+  `status` varchar(255) NOT NULL DEFAULT '1' COMMENT '1:active,0:inactive',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+Module Title :Sales Invoice
+Page Url Name:sales_invoice
+Module:Sub module
+Main Module:sales Module
+Role:all selected
+
+Hardik
+--------------------------------
+Module Title: Reserved Item List
+Page Url Name: reserved_Item_list
+Module: Sub Module
+Main Module: Sales Module
+
+
+
+
+Alpesh
+-----------------------------
+CREATE TABLE IF NOT EXISTS `sales_invoice` (
+  `sales_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_customer_id` int(11) NOT NULL,
+  `sales_customer_orderno_id` int(11) NOT NULL,
+  `sales_customer_name` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_customer_email` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_customer_mobile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_customer_note` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_ordered_datetime` datetime NOT NULL,
+  `sales_outlet_id` int(11) NOT NULL,
+  `sale_person_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `sales_outlet_name` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_outlet_address` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `sales_outlet_contact` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_outlet_receipt_footer` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `sales_gift_card` varchar(90) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sales_total_qty_item` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `sales_subtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_discount_total` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_discount_percentage` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_tax` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_showroom_subtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `sales_showroom_service_subtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `sales_tax_percentage` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `sales_grandtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_total_items` int(11) NOT NULL,
+  `sales_paid_amt` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_unpaid_amt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `sales_return_change` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_created_user_id` int(11) NOT NULL,
+  `sales_created_datetime` datetime NOT NULL,
+  `sales_updated_user_id` int(11) NOT NULL,
+  `sales_updated_datetime` datetime NOT NULL,
+  `sales_remark` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `sales_card_number` varchar(499) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sales_point` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `sales_balance` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT '0:Pending, 1:Production,2:Partly Completed,3:Completed,4:Part Delivery,5:Delivered  ',
+  PRIMARY KEY (`sales_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+
+
+Alpesh
+------------------------
+CREATE TABLE IF NOT EXISTS `sales_invoice_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_id` int(11) NOT NULL,
+  `product_image` varchar(500) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `product_code` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `product_name` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `product_category` int(11) NOT NULL,
+  `product_details` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `cost` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `weight` float(10,3) NOT NULL,
+  `price` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `qty` int(11) NOT NULL,
+  `balance_stock` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `warehouse_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `gold_grade_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `customer_id` int(11) DEFAULT NULL,
+  `vt_status` int(11) NOT NULL,
+  `payment_method` int(11) NOT NULL,
+  `payment_method_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `return_change` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `paid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `subtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `grandtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `discount` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `discount_amount` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `tax` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `tax_amount` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `card_number` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `cheque_number` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `subs` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `subv` tinyint(4) NOT NULL,
+  `gift_card` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `work_status_item` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+
+Alpesh
+--------------------------
+CREATE TABLE IF NOT EXISTS `sales_invoice_item_services` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_invoice_item_id` int(255) NOT NULL,
+  `services_name` varchar(255) NOT NULL,
+  `price` int(255) NOT NULL,
+  `pre_print_invoice` varchar(255) NOT NULL DEFAULT '0' COMMENT '1-print 0-noprint',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+
+Alpesh
+-----------------------
+CREATE TABLE IF NOT EXISTS `sales_invoice_payment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `ordered_datetime` datetime NOT NULL,
+  `outlet_id` int(11) NOT NULL,
+  `gift_card` varchar(90) COLLATE utf8_unicode_ci DEFAULT '',
+  `subtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `grandtotal` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `payment_method` int(11) NOT NULL,
+  `payment_method_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `cheque_number` varchar(499) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `paid_amt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `unpaid_amt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `created_user_id` int(11) NOT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: active, 1: inactive',
+  `card_number` varchar(499) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `customer_Point` int(11) NOT NULL DEFAULT '0',
+  `voucher_number` varchar(90) COLLATE utf8_unicode_ci NOT NULL,
+  `customer_note` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
+  `bank` varchar(499) COLLATE utf8_unicode_ci NOT NULL,
+  `cheque_date` date NOT NULL,
+  `bring_forword` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+
+
+Alpesh
+-------------------------
+CREATE TABLE IF NOT EXISTS `sales_invoice_report` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_code` varchar(255) NOT NULL DEFAULT '',
+  `opening_qty` varchar(255) NOT NULL DEFAULT '0',
+  `purchase_qty` varchar(255) NOT NULL DEFAULT '0',
+  `bonusqty` varchar(255) NOT NULL DEFAULT '0',
+  `sales_qty` varchar(255) NOT NULL DEFAULT '0',
+  `balance_qty` varchar(255) NOT NULL DEFAULT '0',
+  `created_by` varchar(255) NOT NULL DEFAULT '',
+  `created_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+
+UPDATE `resources` SET `pid` = '11' WHERE `resources`.`id` = 32 
+
+UPDATE `modules` SET `pid` = '11' WHERE `modules`.`id` = 32 
+
+Hardik
+----------------------------
+ALTER TABLE `product_code_numbering` ADD `category` VARCHAR(255) NOT NULL DEFAULT '' AFTER `enter_starting_number`, ADD `sub_category` VARCHAR(255) NOT NULL DEFAULT '' AFTER `category`; 
+ALTER TABLE `product_code_numbering` ADD `updated_date` DATE NOT NULL AFTER `enter_starting_number`, ADD `updated_number` VARCHAR(255) NOT NULL DEFAULT '' AFTER `updated_date`; 
+ALTER TABLE `products` ADD `product_type` VARCHAR(255) NOT NULL DEFAULT '' AFTER `status_gold`; 
+
+
+Alpesh
+----------------
+UPDATE `modules` SET `pid` = '11' WHERE `modules`.`id` = 36;
+UPDATE `resources` SET `pid` = '11' WHERE `resources`.`id` = 36;
+
+ALTER TABLE `profit_calculations` ADD `sub_category_id` VARCHAR(255) NOT NULL DEFAULT '' AFTER `category_name`;
+ALTER TABLE `profit_calculations` ADD `sub_category_name` VARCHAR(255) NOT NULL DEFAULT '' AFTER `sub_category_id`;
+
+
+Hardik
+--------------------------
+ALTER TABLE `products`  ADD `GoldWeight` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `product_type`,  ADD `StoneWeight` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `GoldWeight`,  ADD `NetGoldWeight` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `StoneWeight`,  ADD `Wastageperg` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `NetGoldWeight`,  ADD `Wastagegold` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `Wastageperg`,  ADD `StoneCost` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `Wastagegold`,  ADD `LabourCost` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `StoneCost`,  ADD `OtherCost1` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `LabourCost`,  ADD `OtherCost2` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `OtherCost1`,  ADD `OtherCost3` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `OtherCost2`,  ADD `TotalGoldweight` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `OtherCost3`,  ADD `GoldGradeCurrentPrice` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `TotalGoldweight`,  ADD `TotalGoldCost` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `GoldGradeCurrentPrice`,  ADD `TotalAllOtherCost` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `TotalGoldCost`,  ADD `TransferredCost` VARCHAR(255) NOT NULL DEFAULT '0'  AFTER `TotalAllOtherCost`;
+
+ALTER TABLE `products` ADD `note` TEXT NOT NULL DEFAULT '' AFTER `TransferredCost`; 
+ALTER TABLE `stores` ADD `bulk_status` VARCHAR(255) NOT NULL DEFAULT '0' COMMENT '0: default, 1:Bulk Store' AFTER `date_created`; 
+
+
+Alpesh
+----------------------------
+Module Title :Old Reserved Item List
+Page Url Name:old_reserved_item_list
+Module:Sub module
+Main module:Sales Module
+Role:All Selected
+
+Hardik
+-------------------------
+ALTER TABLE `customers` CHANGE `balance` `balance` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '0'
+
+Alpesh
+----------------------------------
+ALTER TABLE `order_items_gold` ADD `work_completd_status` VARCHAR(255) NOT NULL DEFAULT '0' COMMENT 'work job order =1: productadd, 0: productnoadd' AFTER `work_status_item`;
+
+
+Module Title : Customer Invoice List 
+Page Url Name :customer_invoice_list
+Module:Sub Module
+Main Module :Report Module
+Role:All Selected
+
+UPDATE  `resources` SET `pid` = '43' WHERE `resources`.`id` = 33;
+
+UPDATE `modules` SET `pid` = '43' WHERE `modules`.`id` = 33;
+
+UPDATE `modules` SET `title` = 'Goldsmith Wastage Deatils' WHERE `modules`.`id` = 45;
+UPDATE `resources` SET `title` = 'Goldsmith Wastage Details' WHERE `resources`.`id` = 45
+
+Module Title : Goldsmith Wastage
+Page Url Name:goldsmith_wastage
+Module:sub Module
+Main module :Production Module
+Role:all Selected
+
+ALTER TABLE `gold_prices` CHANGE `gp_price` `gp_price` FLOAT NOT NULL;
+ALTER TABLE `gold_prices` CHANGE `gp_purity` `gp_purity` FLOAT NOT NULL;
+ALTER TABLE `gold_grade` CHANGE `grade_price` `grade_price` FLOAT NOT NULL;
+ALTER TABLE `gold_grade` CHANGE `gold_purity` `gold_purity` FLOAT NOT NULL;
+
+ALTER TABLE `work_job_order_receive` ADD `total_wastage` VARCHAR(255) NOT NULL DEFAULT '' AFTER `wastage`;
+
+ALTER TABLE `gold_smith` ADD `emp_no` VARCHAR(255) NOT NULL DEFAULT '' AFTER `gold_smith_num`;
+
+
+Alpesh
+----------------
+Module Title :Bulk Purchase
+Page Url Name:bulk_purchase
+Module: SubModule
+Main Module:Purchase Module
+Role:all Selected
+
+Hardik
+------------
+Module Title: Bulk Transfer
+Page Url Name: transfer_bulk_item
+Module: Sub Module
+Main Module: Warehouse Module
+Role: Select ALL
+
+ALTER TABLE `purchase_order` ADD `product_type` VARCHAR(255) NOT NULL DEFAULT '' AFTER `fuel_tank_id`; 
+
+Hardik
+---------------
+
+ALTER TABLE `inventory` ADD `gold_weight` VARCHAR(255) NOT NULL DEFAULT '0' AFTER `ow_id` 
+
+CREATE TABLE IF NOT EXISTS `goldsmith_transaction` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_order_no` varchar(255) NOT NULL DEFAULT '',
+  `gold_smith_id` varchar(255) NOT NULL DEFAULT '',
+  `weight_qty` varchar(255) NOT NULL DEFAULT '0',
+  `total_weight_balance` varchar(255) NOT NULL DEFAULT '0',
+  `available_weight_qty` varchar(255) NOT NULL DEFAULT '0',
+  `purchase_qty` varchar(255) NOT NULL DEFAULT '0',
+  `sold_qty` varchar(255) NOT NULL DEFAULT '0',
+  `created_by` varchar(255) NOT NULL DEFAULT '',
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(255) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
